@@ -5,7 +5,7 @@ body {
 
 .square {
   width: 30%;
-  background-color: purple;
+  background-color: #3777E6;
   padding-bottom: 30%;
   float: left;
   margin: 1.66%;
@@ -14,18 +14,27 @@ body {
 #container {
   margin: 0 auto;
   max-width: 600px;
+  padding-top: 30px;
 }
 
 header {
-  height: 200px;
+  height: 150px;
   background-color: #5C5CE7;
   text-align: center;
 }
 
 h1 {
-  height: 150px;
+  height: 120px;
+  margin: 0;
 }
 
 nav {
-  height: 50px;
+  height: 30px;
+  margin: 0;
+  background-color: white;
+  color: #5C5CE7;
+}
+
+.selected {
+  background-color: #5C5CE7;
 }
