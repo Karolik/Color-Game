@@ -1,14 +1,6 @@
 // Define the variables
-let colors = generateRandomColors(6);
- /*[
-  "rgb(255, 0, 0)",
-  "rgb(255, 255, 0)",
-  "rgb(0, 255, 0)",
-  "rgb(0, 255, 255)",
-  "rgb(0, 0, 255)",
-  "rgb(255, 0, 255)",
-  ];*/
-
+let numSquares = 6;
+let colors = generateRandomColors(numSquares);
 const squares = document.querySelectorAll(".square");
 let pickedColor = pickColor();
 const colorDisplay = document.querySelector("#colorDisplay");
@@ -16,11 +8,45 @@ const messageDisplay = document.querySelector("#message");
 const h1 = document.querySelector("h1");
 const nav = document.querySelector("nav");
 const resetButton = document.querySelector(".reset");
+const easy = document.querySelector(".easy");
+const hard = document.querySelector(".hard");
+
+//Easy button funtionality - only 3 squares
+easy.addEventListener("click", function(){
+  easy.classList.add("selected"); //Add the color of the button
+  hard.classList.remove("selected");
+  //Generate 3 new colors
+  numSquares = 3;
+  colors = generateRandomColors(numSquares);
+  pickedColor = pickColor();
+  for(let i=0; i<squares.length; i++) {
+    if(colors[i]){  //For squares that have these 3 colors generated, display colors on squares
+      squares[i].style.background = colors[i];
+    }
+    else{
+      squares[i].style.display = "none";  //hide the other 3 squares that don't have colors generated
+    }
+  }
+})
+
+//Hard button functionality
+hard.addEventListener("click", function(){
+  hard.classList.add("selected");
+  easy.classList.remove("selected");
+  //Generate 6 new colors
+  numSquares = 6;
+  colors = generateRandomColors(numSquares);
+  pickedColor = pickColor();
+  for(let i=0; i<squares.length; i++) {
+      squares[i].style.background = colors[i];
+      squares[i].style.display = "block";
+  }
+})
 
 //Reset the game when pressed the resetButton
 resetButton.addEventListener("click", function(){
   //Generate all new colors
-  colors = generateRandomColors(6);
+  colors = generateRandomColors(numSquares);
   //Pick a new random color from array
   pickedColor = pickColor();
   //Change colorDisplay to match picked color
