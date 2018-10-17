@@ -1,8 +1,8 @@
 // Define the variables
 let numSquares = 6;
-let colors = generateRandomColors(numSquares);
+let colors = [];
+let pickedColor;
 const squares = document.querySelectorAll(".square");
-let pickedColor = pickColor();
 const colorDisplay = document.querySelector(".colorDisplay");
 const messageDisplay = document.querySelector("#message");
 const h1 = document.querySelector("h1");
@@ -10,16 +10,49 @@ const nav = document.querySelector("nav");
 const resetButton = document.querySelector(".reset");
 const modeButtons = document.querySelectorAll(".mode");
 
-//Add click functionality to the Easy and Hard buttons
-for(let i=0; i < modeButtons.length; i++){
-  modeButtons[i].addEventListener("click", function(){
-    modeButtons[0].classList.remove("selected");
-    modeButtons[1].classList.remove("selected");
-    this.classList.add("selected");
-    //For "easy" mode show 3 squares, for "hard" show 6
-    this.textContent === "EASY" ? numSquares = 3 : numSquares = 6;
-    reset();
-  })
+//Call funtion init when page loads
+init();
+
+function init(){
+  setUpModeButtons();
+  setUpSquares();
+  reset();
+}
+
+//Mode buttons event listeners
+function setUpModeButtons(){
+  for(let i=0; i < modeButtons.length; i++){
+    modeButtons[i].addEventListener("click", function(){
+      modeButtons[0].classList.remove("selected");
+      modeButtons[1].classList.remove("selected");
+      this.classList.add("selected");
+      //For "easy" mode show 3 squares, for "hard" show 6
+      this.textContent === "EASY" ? numSquares = 3 : numSquares = 6;
+      reset();
+    })
+  }
+}
+
+function setUpSquares(){
+  for(let i=0; i < squares.length; i++){
+    //Add click listeners to squares
+    squares[i].addEventListener("click", function(){
+      //Grab color of clicked square
+      let clickedColor = this.style.backgroundColor
+      //Compare color to picked color
+      if(clickedColor === pickedColor){
+        messageDisplay.textContent = "Correct!";
+        resetButton.textContent = "Play Again?";  //Change the button text from "New colors" to "Play again?"
+        changeColors(clickedColor);
+        h1.style.backgroundColor = clickedColor;
+        nav.style.color = clickedColor;
+      }
+      else {
+        this.style.backgroundColor = "#232323";
+        messageDisplay.textContent = "Try Again";
+      }
+    })
+  }
 }
 
 function reset(){
@@ -27,11 +60,11 @@ function reset(){
   colors = generateRandomColors(numSquares);
   //Pick a new random color from array
   pickedColor = pickColor();
-  //Change colorDisplay to match picked color
+ //Set the RGB text in the header to the RGB of the picked color
   colorDisplay.textContent = pickedColor;
   //Remove the message "Correct" or "Try again"
   messageDisplay.textContent = "";
-  //Change colors of squares
+  //Set the color of squares to the color of the color variables
   for(let i=0; i < squares.length; i++){
     squares[i].style.backgroundColor = colors[i];
   }
@@ -55,32 +88,6 @@ function reset(){
 resetButton.addEventListener("click", function(){
   reset();
 })
-
-//Set the RGB text in the header to the RGB of the selected color
-colorDisplay.textContent = pickedColor;
-
-// Set the color of the squares to the color of the color variables
-for(let i=0; i < squares.length; i++){
-  //Add initial color to squares
-  squares[i].style.backgroundColor = colors[i];
-  //Add click listeners to squares
-  squares[i].addEventListener("click", function(){
-    //Grab color of clicked square
-    let clickedColor = this.style.backgroundColor
-    //Compare color to picked color
-    if(clickedColor === pickedColor){
-      messageDisplay.textContent = "Correct!";
-      resetButton.textContent = "Play Again?";  //Change the button text from "New colors" to "Play again?"
-      changeColors(clickedColor);
-      h1.style.backgroundColor = clickedColor;
-      nav.style.color = clickedColor;
-    }
-    else {
-      this.style.backgroundColor = "#232323";
-      messageDisplay.textContent = "Try Again";
-    }
-  })
-}
 
 function changeColors(color){
   //Loop through all the squares
